@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:sample_gallery/arguments/photo_data.dart';
 import 'package:sample_gallery/models/photo.dart';
 import 'package:sample_gallery/ui/screens/gallery/image_carousel.dart';
+
+enum SampleItem { MoveTab, Carousel }
 
 List<Photo> imageList = [
   Photo('assets/images/image_1.jpg', false, 0),
@@ -71,14 +75,40 @@ class _GalleryScreenState extends State<GalleryScreen> {
               ),
               itemCount: _imageList.length,
               itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
+                return FocusedMenuHolder(
+                  menuWidth: MediaQuery.of(context).size.width * 0.50,
+                  blurSize: 5.0,
+                  menuItemExtent: 45,
+                  menuBoxDecoration: const BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15.0),
+                    ),
+                  ),
+                  duration: const Duration(milliseconds: 100),
+                  animateMenuItems: true,
+                  blurBackgroundColor: Colors.black54,
+                  menuOffset: 10.0,
+                  bottomOffsetHeight: 80.0, //
+                  onPressed: () {
                     Navigator.pushNamed(
                       context,
                       '/photo',
                       arguments: PhotoData(image: _imageList[index].image),
                     );
                   },
+                  menuItems: [
+                    FocusedMenuItem(
+                      title: const Text('Move Tab'),
+                      trailingIcon: const Icon(Icons.tab),
+                      onPressed: () {},
+                    ),
+                    FocusedMenuItem(
+                      title: const Text('Carousel'),
+                      trailingIcon: const Icon(Icons.view_carousel),
+                      onPressed: () {},
+                    ),
+                  ],
                   child: Hero(
                     tag: _imageList[index].image,
                     child: Image.asset(
