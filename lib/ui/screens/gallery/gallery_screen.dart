@@ -75,80 +75,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
               ),
               itemCount: _imageTabList.length,
               itemBuilder: (BuildContext context, int index) {
-                return FocusedMenuHolder(
-                  menuWidth: MediaQuery.of(context).size.width * 0.50,
-                  blurSize: 5.0,
-                  menuItemExtent: 45,
-                  menuBoxDecoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15.0),
-                    ),
-                  ),
-                  duration: const Duration(milliseconds: 100),
-                  animateMenuItems: true,
-                  blurBackgroundColor: Colors.black54,
-                  menuOffset: 10.0,
-                  bottomOffsetHeight: 80.0, //
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/photo',
-                      arguments: PhotoData(image: _imageTabList[index].image),
-                    );
-                  },
-                  menuItems: [
-                    FocusedMenuItem(
-                      title: const Text('Move Tab'),
-                      trailingIcon: const Icon(Icons.tab),
-                      onPressed: () {
-                        setState(() {
-                          Photo result = _carouselList.firstWhere((element) =>
-                              element.image == _imageTabList[index].image);
-                          result.tabIndex = (result.tabIndex == 0) ? 1 : 0;
-                          _carouselList[_carouselList.indexOf(result)] = result;
-                          _imageTabList = _carouselList
-                              .where((item) => item.tabIndex == _selectedIndex)
-                              .toList();
-
-                          _firstTabCount = _carouselList
-                              .where((item) => item.tabIndex == 0)
-                              .toList()
-                              .length;
-                          _secondTabCount = _carouselList
-                              .where((item) => item.tabIndex == 1)
-                              .toList()
-                              .length;
-                        });
-                      },
-                    ),
-                    FocusedMenuItem(
-                      title: Text(
-                        _imageTabList[index].isDisplayedinCarousel == true
-                            ? 'Remove Image'
-                            : 'Display Image',
-                      ),
-                      trailingIcon: const Icon(Icons.view_carousel),
-                      onPressed: () {
-                        setState(() {
-                          Photo result = _carouselList.firstWhere((element) =>
-                              element.image == _imageTabList[index].image);
-                          result.isDisplayedinCarousel =
-                              !result.isDisplayedinCarousel;
-                          _carouselList[_carouselList.indexOf(result)] = result;
-                        });
-                      },
-                    ),
-                  ],
-                  child: Hero(
-                    tag: _imageTabList[index].image,
-                    child: Image.asset(
-                      _imageTabList[index].image,
-                      fit: BoxFit.cover,
-                      width: 1000,
-                    ),
-                  ),
-                );
+                return photoContainer(context, index);
               },
             ),
           )
@@ -169,6 +96,82 @@ class _GalleryScreenState extends State<GalleryScreen> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
         onTap: _onItemTapped,
+      ),
+    );
+  }
+
+  FocusedMenuHolder photoContainer(BuildContext context, int index) {
+    return FocusedMenuHolder(
+      menuWidth: MediaQuery.of(context).size.width * 0.50,
+      blurSize: 5.0,
+      menuItemExtent: 45,
+      menuBoxDecoration: const BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.0),
+        ),
+      ),
+      duration: const Duration(milliseconds: 100),
+      animateMenuItems: true,
+      blurBackgroundColor: Colors.black54,
+      menuOffset: 10.0,
+      bottomOffsetHeight: 80.0, //
+      onPressed: () {
+        Navigator.pushNamed(
+          context,
+          '/photo',
+          arguments: PhotoData(image: _imageTabList[index].image),
+        );
+      },
+      menuItems: [
+        FocusedMenuItem(
+          title: const Text('Move Tab'),
+          trailingIcon: const Icon(Icons.tab),
+          onPressed: () {
+            setState(() {
+              Photo result = _carouselList.firstWhere(
+                  (element) => element.image == _imageTabList[index].image);
+              result.tabIndex = (result.tabIndex == 0) ? 1 : 0;
+              _carouselList[_carouselList.indexOf(result)] = result;
+              _imageTabList = _carouselList
+                  .where((item) => item.tabIndex == _selectedIndex)
+                  .toList();
+
+              _firstTabCount = _carouselList
+                  .where((item) => item.tabIndex == 0)
+                  .toList()
+                  .length;
+              _secondTabCount = _carouselList
+                  .where((item) => item.tabIndex == 1)
+                  .toList()
+                  .length;
+            });
+          },
+        ),
+        FocusedMenuItem(
+          title: Text(
+            _imageTabList[index].isDisplayedinCarousel == true
+                ? 'Remove Image'
+                : 'Display Image',
+          ),
+          trailingIcon: const Icon(Icons.view_carousel),
+          onPressed: () {
+            setState(() {
+              Photo result = _carouselList.firstWhere(
+                  (element) => element.image == _imageTabList[index].image);
+              result.isDisplayedinCarousel = !result.isDisplayedinCarousel;
+              _carouselList[_carouselList.indexOf(result)] = result;
+            });
+          },
+        ),
+      ],
+      child: Hero(
+        tag: _imageTabList[index].image,
+        child: Image.asset(
+          _imageTabList[index].image,
+          fit: BoxFit.cover,
+          width: 1000,
+        ),
       ),
     );
   }
