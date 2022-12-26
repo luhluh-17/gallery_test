@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sample_gallery/arguments/photo_data.dart';
+import 'package:sample_gallery/models/photo.dart';
 import 'package:sample_gallery/ui/screens/gallery/image_carousel.dart';
-import 'package:sample_gallery/ui/screens/photo/photo_screen.dart';
 
-final List<String> imgList = [
-  'assets/images/image_1.jpg',
-  'assets/images/image_2.jpg',
-  'assets/images/image_3.jpg',
-  'assets/images/image_4.jpg',
-  'assets/images/image_5.jpg',
+List<Photo> imageList = [
+  Photo('assets/images/image_1.jpg', true, 0),
+  Photo('assets/images/image_2.jpg', false, 0),
+  Photo('assets/images/image_3.jpg', true, 0),
+  Photo('assets/images/image_4.jpg', false, 0),
+  Photo('assets/images/image_5.jpg', true, 0),
+  Photo('assets/images/image_6.jpg', false, 1),
+  Photo('assets/images/image_7.jpg', false, 1),
+  Photo('assets/images/image_8.jpg', false, 1),
+  Photo('assets/images/image_9.jpg', true, 1),
+  Photo('assets/images/image_10.jpg', true, 1),
 ];
 
 class GalleryScreen extends StatefulWidget {
@@ -20,10 +25,13 @@ class GalleryScreen extends StatefulWidget {
 
 class _GalleryScreenState extends State<GalleryScreen> {
   int _selectedIndex = 0;
+  List<Photo> _imageList =
+      imageList.where((item) => item.tabIndex == 0).toList();
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _imageList = imageList.where((item) => item.tabIndex == index).toList();
     });
   }
 
@@ -56,20 +64,20 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 mainAxisSpacing: 4,
                 crossAxisCount: 3,
               ),
-              itemCount: imgList.length,
+              itemCount: _imageList.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(
                       context,
                       '/photo',
-                      arguments: PhotoData(image: imgList[index]),
+                      arguments: PhotoData(image: _imageList[index].image),
                     );
                   },
                   child: Hero(
-                    tag: imgList[index],
+                    tag: _imageList[index].image,
                     child: Image.asset(
-                      imgList[index],
+                      _imageList[index].image,
                       fit: BoxFit.cover,
                       width: 1000,
                     ),
