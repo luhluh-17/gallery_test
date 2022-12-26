@@ -4,13 +4,13 @@ import 'package:sample_gallery/models/photo.dart';
 import 'package:sample_gallery/ui/screens/gallery/image_carousel.dart';
 
 List<Photo> imageList = [
-  Photo('assets/images/image_1.jpg', true, 0),
+  Photo('assets/images/image_1.jpg', false, 0),
   Photo('assets/images/image_2.jpg', false, 0),
   Photo('assets/images/image_3.jpg', true, 0),
   Photo('assets/images/image_4.jpg', false, 0),
   Photo('assets/images/image_5.jpg', true, 0),
   Photo('assets/images/image_6.jpg', false, 1),
-  Photo('assets/images/image_7.jpg', false, 1),
+  Photo('assets/images/image_7.jpg', true, 1),
   Photo('assets/images/image_8.jpg', false, 1),
   Photo('assets/images/image_9.jpg', true, 1),
   Photo('assets/images/image_10.jpg', true, 1),
@@ -18,10 +18,6 @@ List<Photo> imageList = [
 
 List<Photo> getImagesList(int index) {
   return imageList.where((item) => item.tabIndex == index).toList();
-}
-
-List<Photo> getCarouselList() {
-  return imageList.where((item) => item.isDisplayedinCarousel == true).toList();
 }
 
 class GalleryScreen extends StatefulWidget {
@@ -34,15 +30,13 @@ class GalleryScreen extends StatefulWidget {
 class _GalleryScreenState extends State<GalleryScreen> {
   int _selectedIndex = 0;
   List<Photo> _imageList = getImagesList(0);
-  int _firstTabCount = getImagesList(0).length;
-  int _secondTabCount = getImagesList(1).length;
+  final int _firstTabCount = getImagesList(0).length;
+  final int _secondTabCount = getImagesList(1).length;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       _imageList = getImagesList(index);
-      _firstTabCount = getImagesList(0).length;
-      _secondTabCount = getImagesList(1).length;
     });
   }
 
@@ -66,7 +60,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
       ),
       body: Column(
         children: [
-          const ImageCarousel(),
+          ImageCarousel(imageList: imageList),
           const SizedBox(height: 24),
           Expanded(
             child: GridView.builder(

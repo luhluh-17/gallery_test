@@ -1,16 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
-final List<String> imgList = [
-  'assets/images/image_1.jpg',
-  'assets/images/image_2.jpg',
-  'assets/images/image_3.jpg',
-  'assets/images/image_4.jpg',
-  'assets/images/image_5.jpg',
-];
+import 'package:sample_gallery/models/photo.dart';
+import 'package:sample_gallery/ui/screens/gallery/gallery_screen.dart';
 
 class ImageCarousel extends StatefulWidget {
-  const ImageCarousel({super.key});
+  final List<Photo> imageList;
+
+  const ImageCarousel({super.key, required this.imageList});
 
   @override
   State<ImageCarousel> createState() => _ImageCarouselState();
@@ -28,10 +24,12 @@ class _ImageCarouselState extends State<ImageCarousel> {
           aspectRatio: 2.0,
           enlargeCenterPage: true,
         ),
-        items: imgList
+        items: imageList
+            .where((element) => element.isDisplayedinCarousel == true)
+            .toList()
             .map((item) => Center(
                   child: Image.asset(
-                    item,
+                    item.image,
                     fit: BoxFit.cover,
                     width: 1000,
                   ),
