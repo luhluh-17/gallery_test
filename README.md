@@ -21,3 +21,7 @@ NOTE - The application was tested only on Android API 31. If the application doe
 ``
 flutter run
 ``
+## Preview
+<img src="https://user-images.githubusercontent.com/33846123/209586202-a1dac128-b824-4dda-a4b1-8b3a8a661cdd.gif" height="352em"/> <img src="https://user-images.githubusercontent.com/33846123/209586057-f79e37ec-bcc6-423a-8682-e18c40ce122d.gif" height="352em"/>
+
+
