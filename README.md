@@ -1,16 +1,23 @@
 # sample_gallery
 
-A new Flutter project.
+## Getting Started Instructions
 
-## Getting Started
+1. Open a terminal window in your desired location.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. To copy project source run the command  
+``
+git clone git@github.com:luhluh-17/sample_gallery.git
+``
+3. To get the project depndencies run the command.  
+``
+flutter pub get
+``
+4. (OPTIONAL) If there is any error after Step 3 try to run the command below and repeat Step 3.  
+``
+flutter clean
+``
+5. Run the application  
+NOTE - The application was tested only on Android API 31. If the application does not run in your device try using a virtual emulator that has an API level 31 or above.  
+``
+flutter run
+``
