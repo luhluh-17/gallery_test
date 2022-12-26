@@ -33,13 +33,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
   int _selectedIndex = 0;
   List<Photo> _carouselList = imageList;
   List<Photo> _imageTabList = getImagesList(0);
-  final int _firstTabCount = getImagesList(0).length;
-  final int _secondTabCount = getImagesList(1).length;
+  int _firstTabCount = getImagesList(0).length;
+  int _secondTabCount = getImagesList(1).length;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _imageTabList = getImagesList(index);
+      _imageTabList =
+          _carouselList.where((item) => item.tabIndex == index).toList();
     });
   }
 
@@ -100,7 +101,26 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     FocusedMenuItem(
                       title: const Text('Move Tab'),
                       trailingIcon: const Icon(Icons.tab),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          Photo result = _carouselList.firstWhere((element) =>
+                              element.image == _imageTabList[index].image);
+                          result.tabIndex = (result.tabIndex == 0) ? 1 : 0;
+                          _carouselList[_carouselList.indexOf(result)] = result;
+                          _imageTabList = _carouselList
+                              .where((item) => item.tabIndex == _selectedIndex)
+                              .toList();
+
+                          _firstTabCount = _carouselList
+                              .where((item) => item.tabIndex == 0)
+                              .toList()
+                              .length;
+                          _secondTabCount = _carouselList
+                              .where((item) => item.tabIndex == 1)
+                              .toList()
+                              .length;
+                        });
+                      },
                     ),
                     FocusedMenuItem(
                       title: Text(
@@ -113,7 +133,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
                         setState(() {
                           Photo result = _carouselList.firstWhere((element) =>
                               element.image == _imageTabList[index].image);
-                          result.isDisplayedinCarousel = !true;
+                          result.isDisplayedinCarousel =
+                              !result.isDisplayedinCarousel;
                           _carouselList[_carouselList.indexOf(result)] = result;
                         });
                       },
