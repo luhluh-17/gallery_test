@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sample_gallery/arguments/photo_data.dart';
 import 'package:sample_gallery/ui/screens/gallery/image_carousel.dart';
+import 'package:sample_gallery/ui/screens/photo/photo_screen.dart';
 
 final List<String> imgList = [
   'assets/images/image_1.jpg',
@@ -48,19 +50,32 @@ class _GalleryScreenState extends State<GalleryScreen> {
           const ImageCarousel(),
           const SizedBox(height: 24),
           Expanded(
-            child: GridView(
+            child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisSpacing: 4,
                 mainAxisSpacing: 4,
                 crossAxisCount: 3,
               ),
-              children: imgList
-                  .map((item) => Image.asset(
-                        item,
-                        fit: BoxFit.cover,
-                        width: 1000,
-                      ))
-                  .toList(),
+              itemCount: imgList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/photo',
+                      arguments: PhotoData(image: imgList[index]),
+                    );
+                  },
+                  child: Hero(
+                    tag: imgList[index],
+                    child: Image.asset(
+                      imgList[index],
+                      fit: BoxFit.cover,
+                      width: 1000,
+                    ),
+                  ),
+                );
+              },
             ),
           )
         ],
