@@ -16,6 +16,14 @@ List<Photo> imageList = [
   Photo('assets/images/image_10.jpg', true, 1),
 ];
 
+List<Photo> getImagesList(int index) {
+  return imageList.where((item) => item.tabIndex == index).toList();
+}
+
+List<Photo> getCarouselList() {
+  return imageList.where((item) => item.isDisplayedinCarousel == true).toList();
+}
+
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});
 
@@ -25,13 +33,16 @@ class GalleryScreen extends StatefulWidget {
 
 class _GalleryScreenState extends State<GalleryScreen> {
   int _selectedIndex = 0;
-  List<Photo> _imageList =
-      imageList.where((item) => item.tabIndex == 0).toList();
+  List<Photo> _imageList = getImagesList(0);
+  int _firstTabCount = getImagesList(0).length;
+  int _secondTabCount = getImagesList(1).length;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _imageList = imageList.where((item) => item.tabIndex == index).toList();
+      _imageList = getImagesList(index);
+      _firstTabCount = getImagesList(0).length;
+      _secondTabCount = getImagesList(1).length;
     });
   }
 
@@ -90,14 +101,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.image),
-            label: 'Tab A',
+            icon: const Icon(Icons.image),
+            label: 'Tab A ($_firstTabCount)',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.image),
-            label: 'Tab B',
+            icon: const Icon(Icons.image),
+            label: 'Tab A ($_secondTabCount)',
           ),
         ],
         currentIndex: _selectedIndex,
