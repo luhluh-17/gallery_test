@@ -1,25 +1,19 @@
 class Photo {
-  late String _image;
-  late bool _isDisplayedinCarousel;
-  late int _tabIndex;
+  String _image;
+  bool _isDisplayedinCarousel;
+  int _tabIndex;
 
   Photo(this._image, this._isDisplayedinCarousel, this._tabIndex);
 
-  set setImage(String image) {
-    _image = image;
-  }
+  get image => _image;
 
-  set setIsDisplayedinCarousel(bool value) {
-    _isDisplayedinCarousel = value;
-  }
+  set image(value) => _image = value;
 
-  set setTabIndex(int tabIndex) {
-    _tabIndex = tabIndex;
-  }
+  get isDisplayedinCarousel => _isDisplayedinCarousel;
 
-  String get image => _image;
+  set isDisplayedinCarousel(value) => _isDisplayedinCarousel = value;
 
-  bool get isDisplayedinCarousel => _isDisplayedinCarousel;
+  get tabIndex => _tabIndex;
 
-  int get tabIndex => _tabIndex;
+  set tabIndex(value) => _tabIndex = value;
 }

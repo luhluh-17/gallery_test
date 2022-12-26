@@ -5,8 +5,6 @@ import 'package:sample_gallery/arguments/photo_data.dart';
 import 'package:sample_gallery/models/photo.dart';
 import 'package:sample_gallery/ui/screens/gallery/image_carousel.dart';
 
-enum SampleItem { MoveTab, Carousel }
-
 List<Photo> imageList = [
   Photo('assets/images/image_1.jpg', false, 0),
   Photo('assets/images/image_2.jpg', false, 0),
@@ -33,14 +31,15 @@ class GalleryScreen extends StatefulWidget {
 
 class _GalleryScreenState extends State<GalleryScreen> {
   int _selectedIndex = 0;
-  List<Photo> _imageList = getImagesList(0);
+  List<Photo> _carouselList = imageList;
+  List<Photo> _imageTabList = getImagesList(0);
   final int _firstTabCount = getImagesList(0).length;
   final int _secondTabCount = getImagesList(1).length;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _imageList = getImagesList(index);
+      _imageTabList = getImagesList(index);
     });
   }
 
@@ -64,7 +63,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
       ),
       body: Column(
         children: [
-          ImageCarousel(imageList: imageList),
+          ImageCarousel(imageList: _carouselList),
           const SizedBox(height: 24),
           Expanded(
             child: GridView.builder(
@@ -73,7 +72,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 mainAxisSpacing: 4,
                 crossAxisCount: 3,
               ),
-              itemCount: _imageList.length,
+              itemCount: _imageTabList.length,
               itemBuilder: (BuildContext context, int index) {
                 return FocusedMenuHolder(
                   menuWidth: MediaQuery.of(context).size.width * 0.50,
@@ -94,7 +93,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     Navigator.pushNamed(
                       context,
                       '/photo',
-                      arguments: PhotoData(image: _imageList[index].image),
+                      arguments: PhotoData(image: _imageTabList[index].image),
                     );
                   },
                   menuItems: [
@@ -104,15 +103,26 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       onPressed: () {},
                     ),
                     FocusedMenuItem(
-                      title: const Text('Carousel'),
+                      title: Text(
+                        _imageTabList[index].isDisplayedinCarousel == true
+                            ? 'Remove Image'
+                            : 'Display Image',
+                      ),
                       trailingIcon: const Icon(Icons.view_carousel),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          Photo result = _carouselList.firstWhere((element) =>
+                              element.image == _imageTabList[index].image);
+                          result.isDisplayedinCarousel = !true;
+                          _carouselList[_carouselList.indexOf(result)] = result;
+                        });
+                      },
                     ),
                   ],
                   child: Hero(
-                    tag: _imageList[index].image,
+                    tag: _imageTabList[index].image,
                     child: Image.asset(
-                      _imageList[index].image,
+                      _imageTabList[index].image,
                       fit: BoxFit.cover,
                       width: 1000,
                     ),
